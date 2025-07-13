@@ -38,7 +38,7 @@ class ResearchSpider(scrapy.Spider):
     
     name = 'research_spider'
     
-    def __init__(self, query: str, max_pages: int = 50, *args, **kwargs):
+    def __init__(self, query: str, max_pages: int = 10, *args, **kwargs):
         super(ResearchSpider, self).__init__(*args, **kwargs)
         self.query = query
         self.max_pages = max_pages
@@ -156,7 +156,7 @@ class ResearchSpider(scrapy.Spider):
                         if url.startswith('http'):
                             urls.append(url)
                 
-                return urls[:10]  # Limit to first 10 results
+                return urls[:5]  # Limit to first 5 results
         except Exception as e:
             logger.warning(f"⚠️ Google search failed: {e}")
         
@@ -183,7 +183,7 @@ class ResearchSpider(scrapy.Spider):
                     if href.startswith('http') and 'bing.com' not in href:
                         urls.append(href)
                 
-                return urls[:10]  # Limit to first 10 results
+                return urls[:5]  # Limit to first 5 results
         except Exception as e:
             logger.warning(f"⚠️ Bing search failed: {e}")
         
@@ -347,7 +347,7 @@ class ScrapyResearchService:
             self.progress_callback(message)
         logger.info(f"📊 {message}")
     
-    def extract_content(self, query: str, max_pages: int = 50) -> List[ScrapedContent]:
+    def extract_content(self, query: str, max_pages: int = 10) -> List[ScrapedContent]:
         """Extract content from multiple sources using Scrapy"""
         
         self.update_progress(f"🚀 Starting comprehensive research for: '{query}'")

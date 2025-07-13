@@ -281,7 +281,7 @@ class Workflow:
         
         try:
             # Extract content using Scrapy
-            scraped_contents = self.scrapy_service.extract_content(state.query, max_pages=30)
+            scraped_contents = self.scrapy_service.extract_content(state.query, max_pages=10)
             
             # Convert to expected format
             extracted_tools = []
