@@ -6,8 +6,10 @@ anthropic==0.18.1
 
 # Web scraping and content extraction
 firecrawl==0.1.0
+scrapy==2.11.0
 requests==2.31.0
 beautifulsoup4==4.12.2
+newspaper3k==0.2.8
 
 # PDF processing
 pdfplumber==0.10.3

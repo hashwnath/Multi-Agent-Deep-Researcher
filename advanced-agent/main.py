@@ -83,6 +83,41 @@ def show_relevant_pdfs(workflow, query: str) -> List[str]:
     print(f"✅ Selected {len(selected_keys)} PDF(s) for research")
     return selected_keys
 
+def show_content_extraction_choice() -> str:
+    """Show content extraction options to user"""
+    print("\n🔍 Content Extraction Options:")
+    print("=" * 50)
+    print("1. 🚀 Firecrawl (Fast & Reliable)")
+    print("   - Uses Firecrawl API")
+    print("   - High-quality content extraction")
+    print("   - Limited by API credits")
+    print()
+    print("2. 🕷️ Scrapy (Comprehensive & Free)")
+    print("   - Multi-source web scraping")
+    print("   - Exhaustive content extraction")
+    print("   - No API limits, completely free")
+    print("   - Shows real-time progress")
+    print()
+    print("3. 🔄 Hybrid (Both)")
+    print("   - Combines Firecrawl + Scrapy")
+    print("   - Maximum coverage")
+    print("   - Uses API credits + free scraping")
+    print()
+    
+    while True:
+        choice = input("Choose extraction method (1-3): ").strip()
+        if choice == "1":
+            return "firecrawl"
+        elif choice == "2":
+            return "scrapy"
+        elif choice == "3":
+            return "hybrid"
+        else:
+            print("❌ Invalid choice. Please enter 1, 2, or 3.")
+
+def show_progress(message: str):
+    """Display progress updates in ChatGPT style"""
+    print(f"📊 {message}")
 
 def main():
     workflow = Workflow()
@@ -107,6 +142,9 @@ def main():
         if not query:
             continue
         
+        # Get content extraction choice
+        extraction_method = show_content_extraction_choice()
+        
         # Handle PDF selection based on choice
         selected_pdf_keys = []
         if choice == "2":
@@ -116,13 +154,16 @@ def main():
             # Find relevant PDFs for query
             selected_pdf_keys = show_relevant_pdfs(workflow, query)
         
-        # Run research with selected PDFs
+        # Set progress callback
+        workflow.set_progress_callback(show_progress)
+        
+        # Run research with selected extraction method and PDFs
         if selected_pdf_keys:
             # Use user-selected PDFs
-            result = workflow.run_with_selected_pdfs(query, selected_pdf_keys)
+            result = workflow.run_with_selected_pdfs_and_extraction(query, selected_pdf_keys, extraction_method)
         else:
             # Use regular research (auto-select PDFs)
-            result = workflow.run(query)
+            result = workflow.run_with_extraction_method(query, extraction_method)
         
         # Display results
         print(f"\n📊 Results for: {query}")
