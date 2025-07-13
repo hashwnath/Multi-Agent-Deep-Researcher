@@ -1,4 +1,5 @@
 # Advanced Research Agent
+<img width="2515" height="1200" alt="architecture diagram" src="https://github.com/user-attachments/assets/4fc74b61-9faf-4f63-979f-e8ce3869adaf" />
 
 A sophisticated multi-type research and analysis system that combines web content extraction, PDF processing, and specialized domain research to provide comprehensive insights across various research domains.
 
