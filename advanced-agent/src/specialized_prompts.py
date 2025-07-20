@@ -213,4 +213,15 @@ class IndustryAnalysisPrompts:
                 - Regulatory considerations
                 - Strategic recommendations for businesses
 
-                Focus on actionable business insights and strategic guidance.""" 
+                Focus on actionable business insights and strategic guidance."""
+
+
+class SpecializedPrompts:
+    """Main class that combines all specialized prompt classes"""
+    
+    def __init__(self):
+        self.educational = EducationalComparisonPrompts()
+        self.product = ProductReviewPrompts()
+        self.financial = FinancialAnalysisPrompts()
+        self.technical = TechnicalDocumentationPrompts()
+        self.industry = IndustryAnalysisPrompts() 

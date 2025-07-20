@@ -14,7 +14,6 @@ import logging
 from urllib.parse import urljoin, urlparse
 import re
 from bs4 import BeautifulSoup
-import newspaper3k
 from concurrent.futures import ThreadPoolExecutor
 import threading
 
@@ -222,32 +221,11 @@ class ResearchSpider(scrapy.Spider):
             logger.error(f"❌ Error parsing {url}: {e}")
     
     def extract_content(self, response) -> Dict[str, Any]:
-        """Extract content using multiple methods"""
+        """Extract content using BeautifulSoup"""
         url = response.url
         html_content = response.text
         
-        # Method 1: Newspaper3k for article content
-        try:
-            article = newspaper3k.Article(url)
-            article.download(input_html=html_content)
-            article.parse()
-            
-            if article.text:
-                return {
-                    'title': article.title or '',
-                    'content': article.text,
-                    'metadata': {
-                        'authors': article.authors,
-                        'publish_date': str(article.publish_date),
-                        'top_image': article.top_image,
-                        'summary': article.summary
-                    },
-                    'source_type': 'article'
-                }
-        except Exception as e:
-            logger.debug(f"Newspaper3k failed for {url}: {e}")
-        
-        # Method 2: BeautifulSoup for general content
+        # Method: BeautifulSoup for general content
         try:
             soup = BeautifulSoup(html_content, 'html.parser')
             
