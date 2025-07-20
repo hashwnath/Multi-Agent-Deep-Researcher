@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Agent Researcher</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <span class="brand-text">Multi Agent Researcher</span>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-btn" id="dark-mode-btn" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="status-indicator" id="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Ready</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <div class="research-modes">
+                    <h3>Research Mode</h3>
+                    <div class="mode-options">
+                        <label class="mode-option">
+                            <input type="radio" name="research-mode" value="auto" checked>
+                            <div class="mode-card">
+                                <i class="fas fa-magic"></i>
+                                <div>
+                                    <h4>Auto Research</h4>
+                                    <p>AI selects relevant sources</p>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="mode-option">
+                            <input type="radio" name="research-mode" value="select_pdfs">
+                            <div class="mode-card">
+                                <i class="fas fa-file-pdf"></i>
+                                <div>
+                                    <h4>Select PDFs</h4>
+                                    <p>Choose specific documents</p>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="mode-option">
+                            <input type="radio" name="research-mode" value="relevant_pdfs">
+                            <div class="mode-card">
+                                <i class="fas fa-search-plus"></i>
+                                <div>
+                                    <h4>Smart PDFs</h4>
+                                    <p>Find most relevant docs</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- PDF Selection Panel -->
+                <div id="pdf-panel" class="pdf-panel" style="display: none;">
+                    <h3>Document Selection</h3>
+                    <div id="pdf-list" class="pdf-list">
+                        <!-- PDFs will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Research History -->
+                <div class="research-history">
+                    <h3>Recent Searches</h3>
+                    <div id="history-list" class="history-list">
+                        <div class="history-item">
+                            <i class="fas fa-clock"></i>
+                            <span>AI development tools</span>
+                        </div>
+                        <div class="history-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Python frameworks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Search Interface -->
+            <div class="search-container">
+                <div class="search-header">
+                    <h1>What would you like to research?</h1>
+                    <p>Ask anything about companies, products, technologies, or markets</p>
+                </div>
+
+                <div class="search-box">
+                    <div class="search-input-container">
+                        <textarea 
+                            id="query" 
+                            placeholder="e.g., Compare the best AI development tools for 2024..."
+                            rows="1"
+                        ></textarea>
+                        <button id="research-btn" class="search-btn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="search-suggestions">
+                        <div class="suggestion-chip" data-query="Best AI development tools 2024">
+                            <i class="fas fa-robot"></i> AI Development Tools
+                        </div>
+                        <div class="suggestion-chip" data-query="Top universities for computer science">
+                            <i class="fas fa-graduation-cap"></i> CS Universities
+                        </div>
+                        <div class="suggestion-chip" data-query="Python web frameworks comparison">
+                            <i class="fas fa-code"></i> Python Frameworks
+                        </div>
+                        <div class="suggestion-chip" data-query="Tesla stock analysis 2024">
+                            <i class="fas fa-chart-line"></i> Stock Analysis
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="loading-container" style="display: none;">
+                <div class="loading-content">
+                    <div class="loading-animation">
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring delay-1"></div>
+                        <div class="pulse-ring delay-2"></div>
+                        <i class="fas fa-brain loading-icon"></i>
+                    </div>
+                    <h3 id="loading-title">Researching your query...</h3>
+                    
+                    <!-- Live Progress Feed -->
+                    <div class="progress-feed">
+                        <div id="progress-list" class="progress-list">
+                            <!-- Live progress items will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="results" class="results-container" style="display: none;">
+                <div class="results-header">
+                    <div class="results-meta">
+                        <h2 id="results-title">Research Results</h2>
+                        <div class="results-info">
+                            <span id="research-type" class="type-badge"></span>
+                            <span id="research-time" class="time-badge"></span>
+                            <span id="entity-count" class="count-badge"></span>
+                        </div>
+                    </div>
+                    <div class="results-actions">
+                        <button class="action-btn primary" id="new-search-btn">
+                            <i class="fas fa-plus"></i> New Search
+                        </button>
+                        <button class="action-btn" id="export-btn">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="action-btn" id="share-btn">
+                            <i class="fas fa-share"></i> Share
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Summary -->
+                <div class="quick-summary">
+                    <div class="summary-card">
+                        <h3>Key Insights</h3>
+                        <div id="quick-insights"></div>
+                    </div>
+                </div>
+
+                <!-- Market Insights -->
+                <div id="market-insights" class="insights-section" style="display: none;">
+                    <h3><i class="fas fa-chart-pie"></i> Market Overview</h3>
+                    <div id="insights-grid" class="insights-grid"></div>
+                </div>
+
+                <!-- Entities Grid -->
+                <div id="entities" class="entities-grid">
+                    <!-- Entities will be displayed here -->
+                </div>
+
+                <!-- Detailed Analysis -->
+                <div class="analysis-section">
+                    <div class="analysis-header">
+                        <h3><i class="fas fa-lightbulb"></i> Detailed Analysis</h3>
+                    </div>
+                    <div id="analysis-content" class="analysis-content"></div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="error" class="error-container" style="display: none;">
+                <div class="error-content">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Something went wrong</h3>
+                    <p id="error-message"></p>
+                    <button class="retry-btn" id="retry-btn">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
