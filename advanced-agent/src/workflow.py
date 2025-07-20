@@ -1,5 +1,5 @@
 from typing import Dict, Any, List, Optional, Callable
-from langgraph.graph import StateGraph, END
+from langgraph.graph import StateGraph, END, START
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 from .models import ResearchState, CompanyInfo, CompanyAnalysis, MarketEntity, FinancialMetrics, CompetitiveAnalysis, MarketInsights
@@ -8,6 +8,8 @@ from .pdf_notetaker import PDFNotetakerAgent
 from .market_research_agent import MarketResearchAgent
 from .intent_detector import IntentDetectorAgent
 from .prompts import DeveloperToolsPrompts
+from .specialized_prompts import SpecializedPrompts
+from .specialized_models import SpecializedModels
 from .scrapy_research_service import ScrapyResearchService
 import logging
 
@@ -58,6 +60,7 @@ class Workflow:
         workflow.add_node("analyze", self._analyze_step)
         
         # Add edges
+        workflow.add_edge(START, "detect_intent")
         workflow.add_edge("detect_intent", "extract_content")
         workflow.add_edge("extract_content", "process_pdfs")
         workflow.add_edge("process_pdfs", "route_research")

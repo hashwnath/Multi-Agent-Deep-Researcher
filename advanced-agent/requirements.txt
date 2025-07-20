@@ -1,15 +1,14 @@
 # Core LLM and AI dependencies
 langchain==0.1.0
 langchain-anthropic==0.1.0
-langchain-core==0.1.0
+langchain-core>=0.1.7,<0.2
 anthropic==0.18.1
 
 # Web scraping and content extraction
-firecrawl==0.1.0
+firecrawl==2.16.1
 scrapy==2.11.0
 requests==2.31.0
 beautifulsoup4==4.12.2
-newspaper3k==0.2.8
 
 # PDF processing
 pdfplumber==0.10.3

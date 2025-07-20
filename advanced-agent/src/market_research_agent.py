@@ -171,3 +171,6 @@ class MarketResearchAgent:
         except Exception as e:
             print(f"Error generating market recommendations: {e}")
             return "Failed to generate market recommendations." 
+
+    def research(self, state):
+        return self.research_market_entities(state.query, state) 

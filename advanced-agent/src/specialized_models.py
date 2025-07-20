@@ -130,4 +130,29 @@ class MarketTrend(BaseModel):
     impact_level: Optional[str] = None  # High, Medium, Low
     time_horizon: Optional[str] = None
     affected_sectors: List[str] = []
-    business_implications: List[str] = [] 
+    business_implications: List[str] = []
+
+
+class SpecializedModels:
+    """Main class that combines all specialized model classes"""
+    
+    def __init__(self):
+        # Educational models
+        self.EducationalInstitution = EducationalInstitution
+        self.ProgramComparison = ProgramComparison
+        
+        # Product models
+        self.ProductReview = ProductReview
+        self.ProductComparison = ProductComparison
+        
+        # Financial models
+        self.FinancialInstrument = FinancialInstrument
+        self.InvestmentAnalysis = InvestmentAnalysis
+        
+        # Technical models
+        self.APIEndpoint = APIEndpoint
+        self.TechnicalSpecification = TechnicalSpecification
+        
+        # Industry models
+        self.IndustrySector = IndustrySector
+        self.MarketTrend = MarketTrend 
