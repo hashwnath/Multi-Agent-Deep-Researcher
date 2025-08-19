@@ -12,7 +12,7 @@ A sophisticated multi-type research and analysis system that combines web conten
 - **Financial Research**: Analyze stocks, companies, and market trends
 - **Technical Documentation**: Review APIs, SDKs, and technical specifications
 - **Industry Research**: Study market trends, competitors, and industry analysis
-- **General Research**: Fallback for uncategorized queries
+- **General Research**: Fallback for uncategorized queries.
 
 ### **Intelligent Content Processing**
 - **Web Content Extraction**: Advanced web scraping and content analysis
